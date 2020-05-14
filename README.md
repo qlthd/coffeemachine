@@ -9,4 +9,6 @@ Make sure you have the right VUE_APP_API url in .env at root of wwwroot folder. 
 Make sure coffeemachine database has been created by Entity Framework and seed with data
 
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/qlthd/coffeemachine/screenshoot1.PNG?raw=true)
+![alt text](https://github.com/qlthd/coffeemachine/screenshoot2.PNG?raw=true)
+![alt text](https://github.com/qlthd/coffeemachine/screenshoot3.PNG?raw=true)
