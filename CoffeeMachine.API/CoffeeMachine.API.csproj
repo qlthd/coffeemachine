@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+  
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" />
+  </ItemGroup>
+	
+	<Target Name="RunWebpack" BeforeTargets="Build">
+		<!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
+	
+		
+	</Target>
+	
+
+  <ItemGroup>
+    <ProjectReference Include="..\CoffeeMachine.Data\CoffeeMachine.Data.csproj" />
+  </ItemGroup>
+
+
+</Project>

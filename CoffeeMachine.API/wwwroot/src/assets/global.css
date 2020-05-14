@@ -1,0 +1,26 @@
+
+.top-part{
+    position: relative;
+    background-color: #D7E2DE;
+    height:12rem;
+    overflow: hidden;
+}
+
+
+.separated-columns{
+    padding : 0% 5% 0% 5%;
+}
+
+.separated-columns span{
+    font-size:20px;
+    text-align: justify !important;
+    font-family: "Avenir-Light";
+    display: block;
+}
+
+.header-title{
+    font-size: 4rem;
+    color: #FFF;
+    font-family: Avenir-Black;
+    text-align : center
+}
