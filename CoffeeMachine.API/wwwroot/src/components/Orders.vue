@@ -8,8 +8,8 @@
                         <v-layout  class="justify-center">
                            
                             <v-form ref="form"
-                                    v-model="valid"
-                                    :lazy-validation="lazy">
+                                   
+                                    >
                                 <v-select 
 
                                           :items="drinks"
@@ -38,7 +38,7 @@
 
                                 <v-btn color="success"
                                        class="mr-4"
-                                       @click="orderAgain">
+                                       @click="addOrder">
                                     Order
                                 </v-btn>
 
@@ -115,7 +115,7 @@
             }
         },
         created() {
-            
+            this.getOrders();
             this.$store
                 .dispatch('getDrinks')
                 .then(response => {
@@ -125,17 +125,9 @@
                 )
                 .catch(err => this.displayError(err.response.status)
             );
-            const id = this.$route.params.id;
+            
            
-            this.$store
-                .dispatch('getOrdersByBadgeId', { id })
-                .then(response => {
-                    this.orders = response.data.reverse();
-                   
-                }
-                )
-                .catch(err => console.log(err)
-            );
+            
             
         },
         computed: {
@@ -148,6 +140,17 @@
             
         },
         methods: {
+            getOrders() {
+                const id = this.$route.params.id;
+                this.$store
+                    .dispatch('getOrdersByBadgeId', { id })
+                    .then(response => {
+                        this.orders = response.data.reverse();
+                    }
+                    )
+                    .catch(err => console.log(err)
+                    );
+            },
             addOrder() {
                 const badgeId = this.$route.params.id;
                 const drinkId = this.drink;
@@ -164,10 +167,16 @@
                 this.$store
                     .dispatch('addOrder', { badgeId, drinkId, withMug, sugarAmount, orderTime })
                     .then(() => {
-                        this.$router.push('/badges')
+                        alert('Order added !')
+                        this.getOrders()
                        
                     })
-                    
+                    .catch(err => {
+                        alert('Order couldn\'t be completed ...');
+                        console.log(err);
+                        this.getOrders();
+                    });
+               
             },
             orderAgain() {
                 
@@ -183,13 +192,14 @@
                 this.$store
                     .dispatch('addOrder', {badgeId, drinkId, withMug, sugarAmount, orderTime })
                     .then(() => {
-
-                        this.$router.push("/badges/" + badgeId + "/orders");
-
+                        alert('Order added !')
+                        this.getOrders();
+                        
                     })
                     .catch(err => {
                         console.log(err);
-                        this.$router.push("/badges/" + badgeId + "/orders");
+                        alert('Order couldn\'t be completed ...');
+                        this.getOrders();
                     });
             },
             getDrinkName(id) {

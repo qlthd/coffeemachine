@@ -7,7 +7,7 @@ namespace CoffeeMachine.Data.Repositories
     public interface IOrdersRepository
     {
         public Task Create(Order order);
-       
+        public Task<Order> GetById(int id);
 
     }
 }

@@ -11,7 +11,7 @@ namespace CoffeeMachine.Data
       
         public CoffeeMachineContext(DbContextOptions options) : base(options)
         {
-
+           
         }
 
        

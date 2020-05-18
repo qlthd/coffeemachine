@@ -18,8 +18,8 @@ namespace CoffeeMachine.Test.UnitTest.Controllers
         [Fact]
         public async Task TestGetDrinksAsync()
         {
-            var mockRepo = new Mock<IDrinksRepository>();
-            mockRepo.Setup(repo => repo.GetAll())
+            var mockRepo = new Mock<IRepositoryWrapper>();
+            mockRepo.Setup(repo => repo.Drinks.GetAll())
                 .ReturnsAsync(_fakeData.GetFakeDrinks());
 
             var controller = new DrinksController(mockRepo.Object);

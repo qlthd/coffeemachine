@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using CoffeeMachine.Data;
@@ -20,7 +21,11 @@ namespace CoffeeMachine.API
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json");
+            Configuration = builder.Build();
+            
         }
 
         public IConfiguration Configuration { get; }
@@ -28,6 +33,8 @@ namespace CoffeeMachine.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<CoffeeMachineContext>(options =>
+                   options.UseSqlServer(Configuration.GetConnectionString("CoffeeMachineContext")));
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
@@ -37,11 +44,11 @@ namespace CoffeeMachine.API
                     .AllowAnyHeader()
                     .AllowCredentials());
             });
-            services.AddScoped<IOrdersRepository, OrdersRepository>();
-            services.AddScoped<IDrinksRepository, DrinksRepository>();
-            services.AddScoped<IBadgesRepository, BadgesRepository>();
-            services.AddDbContext<CoffeeMachineContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("CoffeeMachineContext")));
+            
+            
+            services.AddScoped<IRepositoryWrapper,RepositoryWrapper>();
+           
+           
             services.AddControllers();
         }
 
@@ -51,6 +58,12 @@ namespace CoffeeMachine.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+            }
+
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetRequiredService<CoffeeMachineContext>();
+                context.Database.Migrate();
             }
 
             app.UseHttpsRedirection();

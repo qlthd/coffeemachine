@@ -14,24 +14,24 @@ namespace CoffeeMachine.API.Controllers
     public class DrinksController : ControllerBase
     {
         
-        IDrinksRepository _drinksRepository = null;
+        IRepositoryWrapper _repoWrapper = null;
 
-        public DrinksController(IDrinksRepository drinksRepository)
+        public DrinksController(IRepositoryWrapper repoWrapper)
         {
            
-            this._drinksRepository = drinksRepository;
+            this._repoWrapper = repoWrapper;
         }
 
         /// <summary>
         /// Retrieval of drink list.
         /// </summary>
-        /// <returns></returns>
+        /// <returns> An IEnumerable of Drinks</returns>
         /// 
         [HttpGet]
         public async Task<IEnumerable<Drink>> GetDrinks()
         {
             var drinks = new List<Drink>();
-            drinks = await _drinksRepository.GetAll();
+            drinks = await _repoWrapper.Drinks.GetAll();
             return drinks;
         }
 

@@ -16,11 +16,30 @@ namespace CoffeeMachine.Web.Controllers
     [Route("[controller]")]
     public class OrdersController : ControllerBase
     {
-        private readonly IOrdersRepository _ordersRepository;
+        private IRepositoryWrapper _repoWrapper;
 
-        public OrdersController(IOrdersRepository ordersRepository)
+        public OrdersController(IRepositoryWrapper repoWrapper)
         {
-            this._ordersRepository = ordersRepository;
+            this._repoWrapper = repoWrapper;
+        }
+
+        /// <summary>
+        /// Retrieval of an order thanks to its id.
+        /// </summary>
+        /// <param name="id">Id of the order</param>
+        /// <returns>An order</returns>
+        /// 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Order>> GetOrder(int id)
+        {
+            var order = await _repoWrapper.Orders.GetById(id);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            return order;
         }
 
 
@@ -28,7 +47,7 @@ namespace CoffeeMachine.Web.Controllers
         /// Inserting a new drink order.
         /// </summary>
         /// <param name="order">Order to add</param>
-        /// <returns></returns>
+        /// <returns>The GetOrder Action</returns>
         /// 
         [HttpPost]
         public async Task<ActionResult> Add(Order order)
@@ -36,11 +55,13 @@ namespace CoffeeMachine.Web.Controllers
             
             if (this.ModelState.IsValid)
             {
-                await _ordersRepository.Create(order);
+                await _repoWrapper.Orders.Create(order);
                 
             }
-            return CreatedAtAction(nameof(Order), new { id = order.Id }, order);
+            return CreatedAtAction("GetOrder", new { id = order.Id }, order);
         }
+
+        
 
         
 

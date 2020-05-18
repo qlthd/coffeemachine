@@ -9,6 +9,7 @@ namespace CoffeeMachine.Data.Repositories
         public Task<List<Badge>> GetAll();
         public Task<Badge> GetById(int id);
 
+      
        
     }
 }

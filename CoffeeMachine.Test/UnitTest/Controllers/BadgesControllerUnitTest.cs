@@ -15,8 +15,8 @@ namespace CoffeeMachine.Test.UnitTest
         [Fact]
         public async Task TestGetBadgesAsync()
         {
-            var mockRepo = new Mock<IBadgesRepository>();
-            mockRepo.Setup(repo => repo.GetAll())
+            var mockRepo = new Mock<IRepositoryWrapper>();
+            mockRepo.Setup(repo => repo.Badges.GetAll())
                 .ReturnsAsync(_fakeData.GetFakeBadges());
             
             var controller = new BadgesController(mockRepo.Object);
@@ -35,8 +35,8 @@ namespace CoffeeMachine.Test.UnitTest
             var fakeBadgesWithOrders = _fakeData.GetFakeBadgesWithFakeOrder().FirstOrDefault(
                     b => b.Id == testBadgeId);
   
-            var mockBadgeRepo = new Mock<IBadgesRepository>();
-            mockBadgeRepo.Setup(repo => repo.GetById(testBadgeId))
+            var mockBadgeRepo = new Mock<IRepositoryWrapper>();
+            mockBadgeRepo.Setup(repo => repo.Badges.GetById(testBadgeId))
                 .ReturnsAsync(fakeBadgesWithOrders);
            
             var controller = new BadgesController(mockBadgeRepo.Object);

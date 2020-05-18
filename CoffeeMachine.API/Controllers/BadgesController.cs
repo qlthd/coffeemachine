@@ -14,25 +14,25 @@ namespace CoffeeMachine.Controllers
     [Route("[controller]")]
     public class BadgesController : ControllerBase
     {
-        IBadgesRepository _badgesRepository = null;
-        
-        public BadgesController(IBadgesRepository badgesRepository)
+        IRepositoryWrapper _repoWrapper = null;
+
+        public BadgesController(IRepositoryWrapper repoWrapper)
         {
-            this._badgesRepository = badgesRepository;
+            this._repoWrapper = repoWrapper;
             
         }
 
         /// <summary>
         /// Retrieval of badge list.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>An IEnumerable of Badge</returns>
         /// 
         [HttpGet]
         public async Task<IEnumerable<Badge>> GetBadges()
         {
             var badges = new List<Badge>();
 
-            badges = await _badgesRepository.GetAll();
+            badges = await _repoWrapper.Badges.GetAll();
 
 
             return badges;
@@ -41,12 +41,13 @@ namespace CoffeeMachine.Controllers
         /// <summary>
         /// Retrieval of a badge thanks to its id.
         /// </summary>
-        /// <returns>badge</returns>
+        /// <param name="id">Badge id</param>
+        /// <returns>A badge</returns>
         /// 
         [HttpGet("{id}")]
         public async Task<ActionResult<Badge>> GetBadge(int id)
         {
-            var badge = await _badgesRepository.GetById(id);
+            var badge = await _repoWrapper.Badges.GetById(id);
 
             if (badge == null)
             {
@@ -62,7 +63,7 @@ namespace CoffeeMachine.Controllers
         /// Retrieval of orders assigned to a badge.
         /// </summary>
         /// <param name="id">Badge id</param>
-        /// <returns></returns>
+        /// <returns> A list of Orders</returns>
         /// 
         [HttpGet, Route("{id}/orders")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -72,12 +73,14 @@ namespace CoffeeMachine.Controllers
             var badge = new Badge();
             var orders = new List<Order>();
 
-            badge = await _badgesRepository.GetById(id);
+            badge = await _repoWrapper.Badges.GetById(id);
 
             return badge.Orders;
         }
 
-        
+       
+       
+
 
 
 
